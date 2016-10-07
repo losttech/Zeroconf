@@ -21,10 +21,11 @@ namespace Heijden.DNS
 		/// List of AuthorityRR records
 		/// </summary>
 		public List<AuthorityRR> Authorities;
-		/// <summary>
-		/// List of AdditionalRR records
-		/// </summary>
-		public List<AdditionalRR> Additionals;
+
+        /// <summary>
+        /// List of AdditionalRR records
+        /// </summary>
+        public List<AdditionalRR> Additionals;
 
 		public Header header;
 
@@ -270,5 +271,18 @@ namespace Heijden.DNS
         {
             get { return header.QR; }
         }
-	}
+
+        public byte[] ToByteArray()
+        {
+            using(var stream = new MemoryStream())
+            using(var writer = new BinaryWriter(stream)) {
+                this.header.ANCOUNT = checked((ushort)this.Answers.Count);
+                writer.Write(this.header.Data);
+                foreach(var answer in this.Answers) {
+
+                }
+                return stream.ToArray();
+            }
+        }
+    }
 }

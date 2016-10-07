@@ -46,7 +46,7 @@ namespace Heijden.DNS
 	*/
 	#endregion
 
-    class Question
+    public sealed class Question
 	{
         string m_QName;
 		public string QName
@@ -79,7 +79,7 @@ namespace Heijden.DNS
 			QClass = (QClass)rr.ReadUInt16();
 		}
 
-        byte[] WriteName(string src)
+        internal static byte[] WriteName(string src)
 		{
 			if (!src.EndsWith("."))
 				src += ".";
@@ -115,7 +115,7 @@ namespace Heijden.DNS
 			}
 		}
 
-        byte[] WriteShort(ushort sValue)
+        internal static byte[] WriteShort(ushort sValue)
 		{
 			return BitConverter.GetBytes(Header.HostToNetworkOrder((short)sValue));
 		}

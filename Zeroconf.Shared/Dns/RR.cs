@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace Heijden.DNS
 {
@@ -64,7 +65,7 @@ namespace Heijden.DNS
 	/// Resource Record (rfc1034 3.6.)
 	/// </summary>
     [DebuggerDisplay("Name = {NAME} TTL={TTL} Class={Class} Type = {Type} Record={RECORD}")]
-	class RR
+	public class RR
 	{
 		/// <summary>
 		/// The name of the node to which this resource record pertains
@@ -122,6 +123,28 @@ namespace Heijden.DNS
 			RECORD.RR = this;
 		}
 
+        public void Write(BinaryWriter writer)
+        {
+            if (writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
+            writer.Write(Question.WriteName(this.NAME));
+            writer.Write(Question.WriteShort((ushort)this.Type));
+            writer.Write(Question.WriteShort((ushort)this.Class));
+            NetworkWrite(writer, BitConverter.GetBytes(TTL));
+            NetworkWrite(writer, BitConverter.GetBytes(RDLENGTH));
+            this.RECORD.Write(writer);
+        }
+
+        internal static void NetworkWrite(BinaryWriter writer, byte[] bytes)
+        {
+            if (BitConverter.IsLittleEndian) {
+                bytes = new byte[bytes.Length];
+                Array.Reverse(bytes);
+            }
+            writer.Write(bytes);
+        }
+
 		public override string ToString()
 		{
 			return string.Format("{0,-32} {1}\t{2}\t{3}\t{4}",
@@ -133,7 +156,7 @@ namespace Heijden.DNS
 		}
 	}
 
-    class AnswerRR : RR
+    public sealed class AnswerRR : RR
 	{
 		public AnswerRR(RecordReader br)
 			: base(br)
