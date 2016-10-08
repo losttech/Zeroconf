@@ -1,4 +1,3 @@
-using System;
 /*
  3.4.1. A RDATA format
 
@@ -17,27 +16,35 @@ records.
 
 namespace Heijden.DNS
 {
+    using System;
     using System.Globalization;
     using System.IO;
     using System.Linq;
 
-    class RecordA : Record
-	{
+    sealed class RecordA : Record
+    {
         public string Address;
 
-		public RecordA(RecordReader rr)
-		{
+        public RecordA(string address)
+        {
+            this.Address = address;
+        }
+
+        public RecordA(RecordReader rr)
+        {
             Address = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.{2}.{3}",
                 rr.ReadByte(),
                 rr.ReadByte(),
                 rr.ReadByte(),
                 rr.ReadByte());
-		}
+        }
 
-		public override string ToString()
-		{
-			return Address;
-		}
+        public override ushort Length => 4;
+
+        public override string ToString()
+        {
+            return Address;
+        }
 
         public override void Write(BinaryWriter writer)
         {

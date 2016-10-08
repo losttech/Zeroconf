@@ -6,7 +6,7 @@ namespace Heijden.DNS
 {
 	#region RFC info
 	/*
-	3.2. RR definitions
+	3.2. ResourceRecord definitions
 
 	3.2.1. Format
 
@@ -39,14 +39,14 @@ namespace Heijden.DNS
 	NAME            an owner name, i.e., the name of the node to which this
 					resource record pertains.
 
-	TYPE            two octets containing one of the RR TYPE codes.
+	TYPE            two octets containing one of the ResourceRecord TYPE codes.
 
-	CLASS           two octets containing one of the RR CLASS codes.
+	CLASS           two octets containing one of the ResourceRecord CLASS codes.
 
 	TTL             a 32 bit signed integer that specifies the time interval
 					that the resource record may be cached before the source
 					of the information should again be consulted.  Zero
-					values are interpreted to mean that the RR can only be
+					values are interpreted to mean that the ResourceRecord can only be
 					used for the transaction in progress, and should not be
 					cached.  For example, SOA records are always distributed
 					with a zero TTL to prohibit caching.  Zero values can
@@ -65,7 +65,7 @@ namespace Heijden.DNS
 	/// Resource Record (rfc1034 3.6.)
 	/// </summary>
     [DebuggerDisplay("Name = {NAME} TTL={TTL} Class={Class} Type = {Type} Record={RECORD}")]
-	public class RR
+	public class ResourceRecord
 	{
 		/// <summary>
 		/// The name of the node to which this resource record pertains
@@ -78,12 +78,12 @@ namespace Heijden.DNS
 		public Type Type;
 
 		/// <summary>
-		/// Specifies type class of resource record, mostly IN but can be CS, CH or HS 
+		/// Specifies type class of resource record, mostly Internet but can be CS, Chaos or Hesiod 
 		/// </summary>
 		public Class Class;
 
 		/// <summary>
-		/// Time to live, the time interval that the resource record may be cached
+		/// Time to live in seconds, the time interval that the resource record may be cached
 		/// </summary>
 		public uint TTL
 		{
@@ -100,27 +100,23 @@ namespace Heijden.DNS
 	    uint m_TTL;
 
 		/// <summary>
-		/// 
-		/// </summary>
-		public ushort RDLENGTH;
-
-		/// <summary>
 		/// One of the Record* classes
 		/// </summary>
-		public Record RECORD;
+		public Record RECORD { get; set; }
 
 		public int TimeLived;
 
-		public RR(RecordReader rr)
+        public ResourceRecord() { }
+
+		public ResourceRecord(RecordReader rr)
 		{
 			TimeLived = 0;
 			NAME = rr.ReadDomainName();
 			Type = (Type)rr.ReadUInt16();
 			Class = (Class)rr.ReadUInt16();
 			TTL = rr.ReadUInt32();
-			RDLENGTH = rr.ReadUInt16();
-			RECORD = rr.ReadRecord(Type, RDLENGTH);
-			RECORD.RR = this;
+		    var length = rr.ReadUInt16();
+			RECORD = rr.ReadRecord(Type, length);
 		}
 
         public void Write(BinaryWriter writer)
@@ -132,7 +128,7 @@ namespace Heijden.DNS
             writer.Write(Question.WriteShort((ushort)this.Type));
             writer.Write(Question.WriteShort((ushort)this.Class));
             NetworkWrite(writer, BitConverter.GetBytes(TTL));
-            NetworkWrite(writer, BitConverter.GetBytes(RDLENGTH));
+            NetworkWrite(writer, BitConverter.GetBytes(this.RECORD.Length));
             this.RECORD.Write(writer);
         }
 
@@ -147,34 +143,30 @@ namespace Heijden.DNS
 
 		public override string ToString()
 		{
-			return string.Format("{0,-32} {1}\t{2}\t{3}\t{4}",
-				NAME,
-				TTL,
-				Class,
-				Type,
-				RECORD);
+			return $"{NAME,-32} {TTL}\t{Class}\t{Type}\t{RECORD}";
 		}
 	}
 
-    public sealed class AnswerRR : RR
+    public sealed class AnswerResourceRecord : ResourceRecord
 	{
-		public AnswerRR(RecordReader br)
+        public AnswerResourceRecord() { }
+		public AnswerResourceRecord(RecordReader br)
 			: base(br)
 		{
 		}
 	}
 
-    class AuthorityRR : RR
+    class AuthorityResourceRecord : ResourceRecord
 	{
-		public AuthorityRR(RecordReader br)
+		public AuthorityResourceRecord(RecordReader br)
 			: base(br)
 		{
 		}
 	}
 
-    class AdditionalRR : RR
+    class AdditionalResourceRecord : ResourceRecord
 	{
-		public AdditionalRR(RecordReader br)
+		public AdditionalResourceRecord(RecordReader br)
 			: base(br)
 		{
 		}

@@ -8,7 +8,9 @@
 
 namespace Heijden.DNS
 {
-	/*
+    using System;
+
+    /*
 	 * 3.2.2. TYPE values
 	 *
 	 * TYPE fields are used in resource records.
@@ -28,7 +30,7 @@ namespace Heijden.DNS
 		MB = 7,				// a mailbox domain name (EXPERIMENTAL)
 		MG = 8,				// a mail group member (EXPERIMENTAL)
 		MR = 9,				// a mail rename domain name (EXPERIMENTAL)
-		NULL = 10,			// a null RR (EXPERIMENTAL)
+		NULL = 10,			// a null ResourceRecord (EXPERIMENTAL)
 		WKS = 11,			// a well known service description
 		PTR = 12,			// a domain name pointer
 		HINFO = 13,			// host information
@@ -128,7 +130,7 @@ namespace Heijden.DNS
 		MB = Type.MB,		// a mailbox domain name (EXPERIMENTAL)
 		MG = Type.MG,		// a mail group member (EXPERIMENTAL)
 		MR = Type.MR,		// a mail rename domain name (EXPERIMENTAL)
-		NULL = Type.NULL,	// a null RR (EXPERIMENTAL)
+		NULL = Type.NULL,	// a null ResourceRecord (EXPERIMENTAL)
 		WKS = Type.WKS,		// a well known service description
 		PTR = Type.PTR,		// a domain name pointer
 		HINFO = Type.HINFO,	// host information
@@ -222,10 +224,11 @@ namespace Heijden.DNS
 
     public enum Class : ushort
 	{
-		IN = 1,				// the Internet
+		Internet = 1,				// the Internet
+        [Obsolete]
 		CS = 2,				// the CSNET class (Obsolete - used only for examples in some obsolete RFCs)
-		CH = 3,				// the CHAOS class
-		HS = 4				// Hesiod [Dyer 87]
+		Chaos = 3,				// the CHAOS class
+		Hesiod = 4				// Hesiod [Dyer 87]
 	}
 	/*
 	 * 3.2.5. QCLASS values
@@ -239,12 +242,13 @@ namespace Heijden.DNS
 
     public enum QClass : ushort
 	{
-		IN = Class.IN,		// the Internet
+		Internet = Class.Internet,		// the Internet
+        [Obsolete]
 		CS = Class.CS,		// the CSNET class (Obsolete - used only for examples in some obsolete RFCs)
-		CH = Class.CH,		// the CHAOS class
-		HS = Class.HS,		// Hesiod [Dyer 87]
+		Chaos = Class.Chaos,		// the CHAOS class
+		Hesiod = Class.Hesiod,		// Hesiod [Dyer 87]
 
-		ANY = 255			// any class
+		Any = 255			// any class
 	}
 
 	/*
@@ -262,8 +266,8 @@ RCODE           Response code - this 4 bit field is set as part of
 		NotImp = 4,			// Not Implemented                    [RFC1035]
 		Refused = 5,		// Query Refused                      [RFC1035]
 		YXDomain = 6,		// Name Exists when it should not     [RFC2136]
-		YXRRSet = 7,		// RR Set Exists when it should not   [RFC2136]
-		NXRRSet = 8,		// RR Set that should exist does not  [RFC2136]
+		YXRRSet = 7,		// ResourceRecord Set Exists when it should not   [RFC2136]
+		NXRRSet = 8,		// ResourceRecord Set that should exist does not  [RFC2136]
 		NotAuth = 9,		// Server Not Authoritative for zone  [RFC2136]
 		NotZone = 10,		// Name not contained in zone         [RFC2136]
 

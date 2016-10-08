@@ -14,18 +14,18 @@ namespace Heijden.DNS
 		/// </summary>
 		public List<Question> Questions;
 		/// <summary>
-		/// List of AnswerRR records
+		/// List of AnswerResourceRecord records
 		/// </summary>
-		public List<AnswerRR> Answers;
+		public List<AnswerResourceRecord> Answers;
 		/// <summary>
-		/// List of AuthorityRR records
+		/// List of AuthorityResourceRecord records
 		/// </summary>
-		public List<AuthorityRR> Authorities;
+		public List<AuthorityResourceRecord> Authorities;
 
         /// <summary>
-        /// List of AdditionalRR records
+        /// List of AdditionalResourceRecord records
         /// </summary>
-        public List<AdditionalRR> Additionals;
+        public List<AdditionalResourceRecord> Additionals;
 
 		public Header header;
 
@@ -52,9 +52,9 @@ namespace Heijden.DNS
 		public Response()
 		{
 			Questions = new List<Question>();
-			Answers = new List<AnswerRR>();
-			Authorities = new List<AuthorityRR>();
-			Additionals = new List<AdditionalRR>();
+			Answers = new List<AnswerResourceRecord>();
+			Authorities = new List<AuthorityResourceRecord>();
+			Additionals = new List<AdditionalResourceRecord>();
 
 		//	Server = new IPEndPoint(0,0);
 			Error = "";
@@ -72,9 +72,9 @@ namespace Heijden.DNS
 			RecordReader rr = new RecordReader(data);
 
 			Questions = new List<Question>();
-			Answers = new List<AnswerRR>();
-			Authorities = new List<AuthorityRR>();
-			Additionals = new List<AdditionalRR>();
+			Answers = new List<AnswerResourceRecord>();
+			Authorities = new List<AuthorityResourceRecord>();
+			Additionals = new List<AdditionalResourceRecord>();
 
 			header = new Header(rr);
 
@@ -88,16 +88,16 @@ namespace Heijden.DNS
 
 			for (int intI = 0; intI < header.ANCOUNT; intI++)
 			{
-				Answers.Add(new AnswerRR(rr));
+				Answers.Add(new AnswerResourceRecord(rr));
 			}
 
 			for (int intI = 0; intI < header.NSCOUNT; intI++)
 			{
-				Authorities.Add(new AuthorityRR(rr));
+				Authorities.Add(new AuthorityResourceRecord(rr));
 			}
 			for (int intI = 0; intI < header.ARCOUNT; intI++)
 			{
-				Additionals.Add(new AdditionalRR(rr));
+				Additionals.Add(new AdditionalResourceRecord(rr));
 			}
 		}
 
@@ -109,7 +109,7 @@ namespace Heijden.DNS
         //    get
         //    {
         //        List<RecordMX> list = new List<RecordMX>();
-        //        foreach (AnswerRR answerRR in this.Answers)
+        //        foreach (AnswerResourceRecord answerRR in this.Answers)
         //        {
         //            RecordMX record = answerRR.RECORD as RecordMX;
         //            if(record!=null)
@@ -128,7 +128,7 @@ namespace Heijden.DNS
 			get
 			{
 				List<RecordTXT> list = new List<RecordTXT>();
-				foreach (AnswerRR answerRR in this.Answers)
+				foreach (AnswerResourceRecord answerRR in this.Answers)
 				{
 					RecordTXT record = answerRR.RECORD as RecordTXT;
 					if (record != null)
@@ -146,7 +146,7 @@ namespace Heijden.DNS
 			get
 			{
 				List<RecordA> list = new List<RecordA>();
-				foreach (AnswerRR answerRR in this.Answers)
+				foreach (AnswerResourceRecord answerRR in this.Answers)
 				{
 					RecordA record = answerRR.RECORD as RecordA;
 					if (record != null)
@@ -164,7 +164,7 @@ namespace Heijden.DNS
 			get
 			{
 				List<RecordPTR> list = new List<RecordPTR>();
-				foreach (AnswerRR answerRR in this.Answers)
+				foreach (AnswerResourceRecord answerRR in this.Answers)
 				{
 					RecordPTR record = answerRR.RECORD as RecordPTR;
 					if (record != null)
@@ -182,7 +182,7 @@ namespace Heijden.DNS
         //    get
         //    {
         //        List<RecordCNAME> list = new List<RecordCNAME>();
-        //        foreach (AnswerRR answerRR in this.Answers)
+        //        foreach (AnswerResourceRecord answerRR in this.Answers)
         //        {
         //            RecordCNAME record = answerRR.RECORD as RecordCNAME;
         //            if (record != null)
@@ -200,7 +200,7 @@ namespace Heijden.DNS
 			get
 			{
 				List<RecordAAAA> list = new List<RecordAAAA>();
-				foreach (AnswerRR answerRR in this.Answers)
+				foreach (AnswerResourceRecord answerRR in this.Answers)
 				{
 					RecordAAAA record = answerRR.RECORD as RecordAAAA;
 					if (record != null)
@@ -218,7 +218,7 @@ namespace Heijden.DNS
         //    get
         //    {
         //        List<RecordNS> list = new List<RecordNS>();
-        //        foreach (AnswerRR answerRR in this.Answers)
+        //        foreach (AnswerResourceRecord answerRR in this.Answers)
         //        {
         //            RecordNS record = answerRR.RECORD as RecordNS;
         //            if (record != null)
@@ -236,7 +236,7 @@ namespace Heijden.DNS
         //    get
         //    {
         //        List<RecordSOA> list = new List<RecordSOA>();
-        //        foreach (AnswerRR answerRR in this.Answers)
+        //        foreach (AnswerResourceRecord answerRR in this.Answers)
         //        {
         //            RecordSOA record = answerRR.RECORD as RecordSOA;
         //            if (record != null)
@@ -246,20 +246,20 @@ namespace Heijden.DNS
         //    }
         //}
 
-		public RR[] RecordsRR
+		public ResourceRecord[] RecordsResourceRecord
 		{
 			get
 			{
-				List<RR> list = new List<RR>();
-				foreach (RR rr in this.Answers)
+				List<ResourceRecord> list = new List<ResourceRecord>();
+				foreach (ResourceRecord rr in this.Answers)
 				{
 					list.Add(rr);
 				}
-				foreach (RR rr in this.Authorities)
+				foreach (ResourceRecord rr in this.Authorities)
 				{
 					list.Add(rr);
 				}
-				foreach (RR rr in this.Additionals)
+				foreach (ResourceRecord rr in this.Additionals)
 				{
 					list.Add(rr);
 				}

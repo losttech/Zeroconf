@@ -15,7 +15,7 @@ PTR records cause no additional section processing.  These RRs are used
 in special domains to point to some other location in the domain space.
 These records are simple data, and don't imply any special processing
 similar to that performed by CNAME, which identifies aliases.  See the
-description of the IN-ADDR.ARPA domain for an example.
+description of the Internet-ADDR.ARPA domain for an example.
  */
 
 namespace Heijden.DNS

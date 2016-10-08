@@ -4,15 +4,11 @@ namespace Heijden.DNS
     using System;
     using System.IO;
     public abstract class Record
-	{
-		/// <summary>
-		/// The Resource Record this RDATA record belongs to
-		/// </summary>
-		public RR RR;
-
+    {
+        public virtual ushort Length { get { throw new NotImplementedException(); } }
         public virtual void Write(BinaryWriter writer)
         {
             throw new NotImplementedException();
         }
-	}
+    }
 }

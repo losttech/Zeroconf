@@ -16,7 +16,7 @@ using System;
         being selected. The range of this number is 0-65535.  This is a
         16 bit unsigned integer in network byte order.  Domain
         administrators SHOULD use Weight 0 when there isn't any server
-        selection to do, to make the RR easier to read for humans (less
+        selection to do, to make the ResourceRecord easier to read for humans (less
         noisy).  In the presence of records containing weights greater
         than 0, records with weight 0 should have a very small chance of
         being selected.
@@ -32,14 +32,14 @@ using System;
         (that have not been ordered yet) in any order, except that all
         those with weight 0 are placed at the beginning of the list.
 
-        Compute the sum of the weights of those RRs, and with each RR
+        Compute the sum of the weights of those RRs, and with each ResourceRecord
         associate the running sum in the selected order. Then choose a
         uniform random number between 0 and the sum computed
-        (inclusive), and select the RR whose running sum value is the
+        (inclusive), and select the ResourceRecord whose running sum value is the
         first in the selected order which is greater than or equal to
         the random number selected. The target host specified in the
-        selected SRV RR is the next one to be contacted by the client.
-        Remove this SRV RR from the set of the unordered SRV RRs and
+        selected SRV ResourceRecord is the next one to be contacted by the client.
+        Remove this SRV ResourceRecord from the set of the unordered SRV RRs and
         apply the described algorithm to the unordered SRV RRs to select
         the next target host.  Continue the ordering process until there
         are no unordered SRV RRs.  This process is repeated for each
