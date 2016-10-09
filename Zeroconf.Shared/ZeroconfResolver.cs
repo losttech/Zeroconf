@@ -27,10 +27,6 @@ namespace Zeroconf
 #endif
         }
 
-
-
-
-
         static IEnumerable<string> BrowseResponseParser(Response response)
         {
             return response.RecordsPTR.Select(ptr => ptr.PTRDNAME);

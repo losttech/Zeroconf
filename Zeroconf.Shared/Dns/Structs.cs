@@ -257,7 +257,7 @@ RCODE           Response code - this 4 bit field is set as part of
                 interpretation:
 	 */
 
-    enum RCode
+    public enum RCode
 	{
 		NoError = 0,		// No Error                           [RFC1035]
 		FormErr = 1,		// Format Error                       [RFC1035]
@@ -310,7 +310,7 @@ OPCODE          A four bit field that specifies kind of query in this
                 3-15            reserved for future use
 	 */
 
-    enum OPCode
+    public enum OPCode
 	{
 		Query = 0,				// a standard query (QUERY)
 		IQUERY = 1,				// OpCode Retired (previously IQUERY - No further [RFC3425]

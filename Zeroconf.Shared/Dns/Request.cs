@@ -4,17 +4,17 @@ using System.Text;
 
 namespace Heijden.DNS
 {
-    class Request
+    public class Request
 	{
-		public Header header;
+		public Header Header { get; }
 
         List<Question> questions;
 
 		public Request()
 		{
-			header = new Header();
-			header.OPCODE = OPCode.Query;
-			header.QDCOUNT = 0;
+			Header = new Header();
+			Header.OPCODE = OPCode.Query;
+			Header.QDCOUNT = 0;
 
 			questions = new List<Question>();
 		}
@@ -29,8 +29,8 @@ namespace Heijden.DNS
 			get
 			{
 				List<byte> data = new List<byte>();
-				header.QDCOUNT = (ushort)questions.Count;
-				data.AddRange(header.Data);
+				Header.QDCOUNT = (ushort)questions.Count;
+				data.AddRange(Header.Data);
 				foreach (Question q in questions)
 					data.AddRange(q.Data);
 				return data.ToArray();
