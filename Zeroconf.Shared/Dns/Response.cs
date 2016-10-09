@@ -279,7 +279,7 @@ namespace Heijden.DNS
                 this.header.ANCOUNT = checked((ushort)this.Answers.Count);
                 writer.Write(this.header.Data);
                 foreach(var answer in this.Answers) {
-
+                    answer.Write(writer);
                 }
                 return stream.ToArray();
             }
